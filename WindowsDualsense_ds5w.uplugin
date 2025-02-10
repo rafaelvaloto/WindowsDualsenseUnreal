@@ -1,0 +1,29 @@
+﻿{
+	"FileVersion": 3,
+	"Version": 0,
+	"VersionName": "1.0",
+	"FriendlyName": "WindowsDualsense_ds5w",
+	"Description": "Windows dualsense controller triiger",
+	"Category": "Input",
+	"CreatedBy": "Valoto",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": true,
+	"Installed": true,
+	"Modules": [
+		{
+			"Name": "WindowsDualsense_ds5w",
+			"Type": "Runtime",
+			"LoadingPhase": "PreDefault"
+		}
+	],
+	"RuntimeDependencies": [
+		{
+			"Path": "ThirdParty/DualSenseWindows_V0.1/ds5w_x64.dll",
+			"Type": "Runtime"
+		}
+	]
+}
