@@ -30,13 +30,6 @@ public class WindowsDualsense_ds5w : ModuleRules
         {
 	        "Slate",
 	        "SlateCore",
-	        "EditorSubsystem", // Necessário para FEditorDelegates
-	        "UnrealEd"         // Necessário porque contém FEditorDelegates
         });
-
-        if (Target.bBuildEditor)
-        {
-	        PrivateDependencyModuleNames.Add("EditorScriptingUtilities");
-        }
 	}
 }

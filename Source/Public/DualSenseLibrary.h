@@ -1,9 +1,7 @@
-﻿
-#pragma once
+﻿#pragma once
 
 #include "ds5w.h"
 #include "CoreMinimal.h"
-#include "FDualSenseInputDevice.h"
 #include "UObject/Object.h"
 #include "DualSenseLibrary.generated.h"
 
@@ -17,31 +15,39 @@ class WINDOWSDUALSENSE_DS5W_API UDualSenseLibrary : public UObject
 	GENERATED_BODY()
 
 public:
-	UDualSenseLibrary();
-
-	bool InitializeLibrary(FDualSenseInputDevice* Device);
+	bool InitializeLibrary();
 	void ShutdownLibrary();
 	
-	bool Reconnect();
-	bool IsConnected() const;
-	void SetConnectionIsValid(bool IsValid);
+	bool IsConnected(int32 ControllerId);
+	void SetConnectionIsValid(int32 ControllerId, bool IsValid);
 
-	static bool UpdateInput();
-	
-	virtual bool SupportsForceFeedback(int32 ControllerId) { return true; }
-	virtual void SetLightColor(int32 ControllerId, FColor Color) {};
-	virtual void ResetLightColor(int32 ControllerId) {};
-	virtual void SetDeviceProperty(int32 ControllerId, const FInputDeviceProperty* Property) {}
+	static bool UpdateInput(
+		const TSharedRef<FGenericApplicationMessageHandler>& InMessageHandler,
+		const FPlatformUserId UserId,
+		const FInputDeviceId InputDeviceId
+	);
+	static bool ValidateInputState(int32 ControllerId);
 
-	static FDualSenseInputDevice* DualSenseInputDevice; // Ponteiro para o dispositivo
-	
+	static bool Reconnect(int32 ControllerId);
+	static void UpdateColorOutput(int32 ControllerId, FColor Color);
+	static void SetVibration(int32 ControllerId, FForceFeedbackValues Vibration);
+	static void SetTriggerVibration(int32 ControllerId, FInputDeviceTriggerVibrationProperty TriggerVibrationProperty);
+	static void SetTriggerResistance(int32 ControllerId,
+	                                 FInputDeviceTriggerResistanceProperty TriggerResistenceProperty);
+
+	static void SendOut(int32 ControllerId);
+	static int ConvertForceTriggersTo255(int Value);
+	static int ConvertTo255(float Value);
+
+	static int32 ControllersCount;
+
 private:
 	// Send context DualSense to Unreal
 	static DS5W::_DeviceEnumInfo* Infos;
-	static DS5W::_DS5InputState InputState;
-	static DS5W::DS5OutputState OutputState;
-	static DS5W::DeviceContext DeviceContext;
+	static TMap<int32, DS5W::_DS5InputState> InputState;
+	static TMap<int32, DS5W::DS5OutputState> OutputState;
+	static TMap<int32, DS5W::DeviceContext> DeviceContexts;
+	static TMap<int32, bool> IsInitialized;
 	
-	bool bIsInitialized;
 	bool Connection();
 };
